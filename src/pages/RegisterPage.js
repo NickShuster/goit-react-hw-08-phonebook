@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerRequest } from '../utils/actions'; // Замість імпортування registerRequest звідси
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleRegister = () => {
-    // Додайте код для реєстрації користувача тут
-    // Після успішної реєстрації перенаправте користувача на сторінку /login
-    navigate('/login');
+  const handleRegister = async () => {
+    const userData = {
+      name,
+      email,
+      password,
+    };
+
+    try {
+      await dispatch(registerRequest(userData));
+      navigate('/login');
+    } catch (error) {
+      alert(`Помилка під час реєстрації: ${error.message}`);
+    }
   };
 
   return (
